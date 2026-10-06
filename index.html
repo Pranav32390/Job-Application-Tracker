@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerTrail — Smart Job Placement & Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- AUTHENTICATION OVERLAY -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-box">
+      <div class="brand auth-brand">
+        <div class="brand-mark">CT</div>
+        <span>CareerTrail</span>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLoginBtn" type="button">Login</button>
+        <button class="auth-tab" id="tabSignupBtn" type="button">Sign Up</button>
+      </div>
+      <form id="loginForm" class="auth-form">
+        <label>Email Address<input type="email" id="loginEmail" required placeholder="alex@univ.edu"></label>
+        <label>Password<input type="password" id="loginPassword" required placeholder="••••••••"></label>
+        <button class="btn btn-primary btn-block" type="submit">Access Workspace</button>
+        <p class="auth-hint">Demo Admin: <b>admin@careertrail.com</b> / <b>admin</b><br>Demo User: <b>alex@univ.edu</b> / <b>alex</b></p>
+      </form>
+      <form id="signupForm" class="auth-form hidden">
+        <label>Full Name<input type="text" id="signupName" required placeholder="Student Name"></label>
+        <label>Email Address<input type="email" id="signupEmail" required placeholder="name@univ.edu"></label>
+        <label>Password<input type="password" id="signupPassword" required minlength="4" placeholder="At least 4 chars"></label>
+        <label>Select Role
+          <select id="signupRole">
+            <option value="user">Student / Candidate (User Module)</option>
+            <option value="admin">Placement Recruiter (Admin Module)</option>
+          </select>
+        </label>
+        <button class="btn btn-primary btn-block" type="submit">Register Account</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="app-shell" id="appShell">
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">CT</div>
+        <span>CareerTrail</span>
+      </div>
+      <div class="role-badge" id="roleBadge">User Mode</div>
+      <nav class="side-nav" id="sideNav">
+        <!-- Injected dynamically based on role -->
+      </nav>
+      <div class="sidebar-tip">
+        <span>🗓</span>
+        <div><strong>Academic Review</strong><br><small id="sidebarLiveDate">Active</small></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="icon-btn mobile-menu" id="menuBtn">☰</button>
+        <div class="topbar-title">
+          <span class="eyebrow" id="topbarModuleTag">SYSTEM WORKSPACE</span>
+          <strong id="pageTitle">Dashboard</strong>
+        </div>
+        <div class="top-actions">
+          <button class="profile-btn" id="profileBtn"><span id="userInitial">AS</span> <span id="userNameText">Alex</span> ⌄</button>
+          <div class="user-dropdown" id="userDropdown">
+            <div class="dropdown-header"><strong id="ddName">Alex</strong><span id="ddEmail">alex@univ.edu</span></div>
+            <button class="dropdown-item text-danger" id="logoutBtn">Log Out</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- USER MODULE: DASHBOARD -->
+        <section id="dashboard" class="page-section">
+          <div class="hero">
+            <div>
+              <span class="section-kicker" id="heroGreeting">WELCOME BACK</span>
+              <h1>Track Progress & Land Your<br><em>Dream Offer.</em></h1>
+              <p>Apply to live recruiter vacancies using 1-Click Easy Apply and track your entire interview funnel.</p>
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="#explore">⚡ Explore Open Jobs</a>
+                <a class="btn btn-secondary" href="#applications">View My Funnel →</a>
+              </div>
+            </div>
+            <div class="hero-note">
+              <span class="sun">☀</span>
+              <strong>Active Session</strong>
+              <small id="todayDateLabel">Loading date...</small>
+            </div>
+          </div>
+          <div class="stats-grid" id="statsGrid"></div>
+          <div class="section-heading"><div><span class="section-kicker">FEATURED</span><h2>Top Verified Postings</h2></div><a href="#explore">See All Jobs →</a></div>
+          <div class="application-list" id="dashboardLiveBoard"></div>
+          <div class="section-heading"><div><span class="section-kicker">STAGES</span><h2>Application Pipeline</h2></div><a href="#applications">Detailed View →</a></div>
+          <div class="pipeline" id="pipeline"></div>
+        </section>
+
+        <!-- USER MODULE: LIVE JOB BOARD -->
+        <section id="explore" class="page-section">
+          <div class="page-intro">
+            <div><span class="section-kicker">OPPORTUNITIES</span><h1>Live Recruiter Openings</h1><p>Verified positions published by admin recruiters. Apply directly or use fast profile sync.</p></div>
+          </div>
+          <div class="application-list" id="exploreJobList"></div>
+        </section>
+
+        <!-- USER MODULE: APPLICATIONS -->
+        <section id="applications" class="page-section">
+          <div class="page-intro">
+            <div><span class="section-kicker">MY RECORDS</span><h1>Tracked Applications</h1><p>Every job you have applied for or logged manually.</p></div>
+            <button class="btn btn-primary" id="addApplicationBtn">＋ Manual Entry</button>
+          </div>
+          <div class="toolbar">
+            <label class="list-search">⌕ <input id="applicationSearch" type="search" placeholder="Search company or role..."></label>
+            <div class="filter-row" id="filterRow">
+              <button class="filter active" data-filter="All">All</button>
+              <button class="filter" data-filter="Saved">Saved</button>
+              <button class="filter" data-filter="Applied">Applied</button>
+              <button class="filter" data-filter="Interview">Interview</button>
+              <button class="filter" data-filter="Offer">Offer</button>
+              <button class="filter" data-filter="Rejected">Rejected</button>
+            </div>
+          </div>
+          <div class="application-list" id="allApplications"></div>
+        </section>
+
+        <!-- USER MODULE: INTERVIEWS -->
+        <section id="interviews" class="page-section">
+          <div class="page-intro"><div><span class="section-kicker">SCHEDULE</span><h1>Upcoming Interviews</h1><p>Rounds, dates, and schedules.</p></div></div>
+          <div class="interview-grid" id="interviewList"></div>
+        </section>
+
+        <!-- USER MODULE: SAVED -->
+        <section id="saved" class="page-section">
+          <div class="page-intro"><div><span class="section-kicker">BOOKMARKS</span><h1>Saved Positions</h1></div></div>
+          <div class="saved-grid" id="savedJobs"></div>
+        </section>
+
+        <!-- ADMIN MODULE: SYSTEM DASHBOARD & CONTROLS -->
+        <section id="admin" class="page-section">
+          <div class="page-intro">
+            <div><span class="section-kicker">ADMINISTRATOR CONTROL</span><h1>System Analytics & Postings</h1><p>Recruiter panel for posting jobs, inspecting platform metrics, and auditing users.</p></div>
+          </div>
+          
+          <div class="stats-grid" id="adminAnalyticsGrid"></div>
+
+          <!-- ADMIN POST JOB FORM -->
+          <div class="admin-panel-card">
+            <div class="card-heading"><h3>📢 Publish Live Placement Vacancy</h3><span>Instant broadcast to all candidates</span></div>
+            <form id="adminPostJobForm">
+              <div class="form-grid">
+                <label>Company Name<input required id="postCompany" placeholder="e.g. Google, Microsoft, Infosys"></label>
+                <label>Job Designation<input required id="postRole" placeholder="e.g. SDE-1 / Frontend Developer"></label>
+                <label>Location<input required id="postLocation" placeholder="e.g. Hyderabad / Bengaluru / Remote"></label>
+                <label>Salary Package<input id="postSalary" placeholder="e.g. ₹10–14 LPA"></label>
+                <label>Employment Type<select id="postType"><option>Full-time</option><option>Internship</option><option>Contract</option></select></label>
+                <label>External Career URL<input required type="url" id="postUrl" placeholder="https://careers.google.com/jobs/101"></label>
+              </div>
+              <label>Role Requirements / Description<textarea id="postDesc" rows="2" placeholder="Eligibility, key skill expectations..."></textarea></label>
+              <button class="btn btn-primary" type="submit">Publish Vacancy Now 🚀</button>
+            </form>
+          </div>
+
+          <div class="section-heading"><div><span class="section-kicker">ACTIVE VACANCIES</span><h2>Manage Posted Openings</h2></div></div>
+          <div class="application-list" id="adminJobListings"></div>
+
+          <div class="section-heading"><div><span class="section-kicker">AUDIT</span><h2>Platform Registered Users</h2></div></div>
+          <div class="application-list" id="adminUserList"></div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="settings" class="page-section">
+          <div class="page-intro"><div><span class="section-kicker">OPTIONS</span><h1>System Settings</h1></div></div>
+          <div class="settings-card">
+            <div><div><h3>Dark Palette</h3><p>Comfortable low-glare mode.</p></div><button class="toggle" id="themeToggle"><span></span></button></div>
+            <div><div><h3>Reset Test Data</h3><p>Re-initialize default users and vacancies.</p></div><button class="btn btn-secondary" id="resetData">Reset Database</button></div>
+          </div>
+        </section>
+      </div>
+
+      <footer>
+        <div><strong>CareerTrail</strong><span> — SDC Project Review-1 (HTML, CSS, JS)</span></div>
+        <div class="footer-bottom">System configured with strict User & Admin module boundaries.</div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ENTRY MODAL -->
+  <div class="modal-backdrop" id="applicationModal">
+    <div class="modal">
+      <button class="modal-close" id="closeApplicationModal">×</button>
+      <div class="modal-header"><span class="section-kicker">ENTRY</span><h2 id="formTitle">Record Application</h2></div>
+      <form id="applicationForm">
+        <input type="hidden" id="applicationId">
+        <div class="form-grid">
+          <label>Company Name<input required id="company" placeholder="e.g. Amazon"></label>
+          <label>Role / Position<input required id="role" placeholder="e.g. SDE"></label>
+          <label>Location<input required id="location" placeholder="e.g. Hyderabad"></label>
+          <label>Package<input id="salary" placeholder="e.g. ₹12 LPA"></label>
+          <label>Application Date<input required type="date" id="applicationDate"></label>
+          <label>Status<select id="status"><option>Saved</option><option>Applied</option><option>Interview</option><option>Offer</option><option>Rejected</option></select></label>
+        </div>
+        <label>Career Portal URL<input type="url" id="jobUrl" placeholder="https://..."></label>
+        <label>Notes<textarea id="notes" rows="3" placeholder="Interview questions, DSA round prep..."></textarea></label>
+        <div class="form-actions"><button type="button" class="btn btn-secondary" id="cancelForm">Cancel</button><button class="btn btn-primary" type="submit">Save</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- DETAILS MODAL -->
+  <div class="modal-backdrop" id="detailsModal">
+    <div class="modal detail-modal">
+      <button class="modal-close" id="closeDetailsModal">×</button>
+      <div id="detailContent"></div>
+      <div class="form-actions">
+        <button class="btn btn-danger" id="deleteApplication">Delete</button>
+        <button class="btn btn-primary" id="closeDetailsBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/storage.js"></script>
+  <script src="js/applications.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
